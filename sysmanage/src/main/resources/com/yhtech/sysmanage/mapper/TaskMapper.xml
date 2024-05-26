@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhtech.sysmanage.mapper.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.yhtech.sysmanage.mapper.entity.Task">
+    <!--@mbg.generated-->
+    <!--@Table task-->
+    <id column="id" property="id" />
+    <result column="task_name" property="taskName" />
+    <result column="task_desc" property="taskDesc" />
+    <result column="yn" property="yn" />
+    <result column="company_id" property="companyId" />
+    <result column="create_at" property="createAt" />
+    <result column="update_at" property="updateAt" />
+    <result column="create_user" property="createUser" />
+    <result column="update_user" property="updateUser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, task_name, task_desc, yn, company_id, create_at, update_at, create_user, update_user
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from task
+    where id = #{id}
+  </select>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.yhtech.sysmanage.mapper.entity.Task" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskName != null and taskName != ''">
+        task_name,
+      </if>
+      <if test="taskDesc != null and taskDesc != ''">
+        task_desc,
+      </if>
+      <if test="yn != null">
+        yn,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskName != null and taskName != ''">
+        #{taskName},
+      </if>
+      <if test="taskDesc != null and taskDesc != ''">
+        #{taskDesc},
+      </if>
+      <if test="yn != null">
+        #{yn},
+      </if>
+      <if test="companyId != null">
+        #{companyId},
+      </if>
+      <if test="createAt != null">
+        #{createAt},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt},
+      </if>
+      <if test="createUser != null">
+        #{createUser},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yhtech.sysmanage.mapper.entity.Task">
+    <!--@mbg.generated-->
+    update task
+    <set>
+      <if test="taskName != null and taskName != ''">
+        task_name = #{taskName},
+      </if>
+      <if test="taskDesc != null and taskDesc != ''">
+        task_desc = #{taskDesc},
+      </if>
+      <if test="yn != null">
+        yn = #{yn},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

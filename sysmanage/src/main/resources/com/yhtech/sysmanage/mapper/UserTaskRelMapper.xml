@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yhtech.sysmanage.mapper.UserTaskRelMapper">
+  <resultMap id="BaseResultMap" type="com.yhtech.sysmanage.mapper.entity.UserTaskRel">
+    <!--@mbg.generated-->
+    <!--@Table user_task_rel-->
+    <id column="id" property="id" />
+    <result column="user_id" property="userId" />
+    <result column="task_id" property="taskId" />
+    <result column="yn" property="yn" />
+    <result column="company_id" property="companyId" />
+    <result column="create_at" property="createAt" />
+    <result column="update_at" property="updateAt" />
+    <result column="create_user" property="createUser" />
+    <result column="update_user" property="updateUser" />
+  </resultMap>
+  <resultMap id="user" type="com.yhtech.sysmanage.mapper.entity.User">
+    <id column="id" property="id"/>
+    <result column="user_name" property="userName"/>
+  </resultMap>
+  <resultMap id="task" type="com.yhtech.sysmanage.mapper.entity.Task">
+    <id column="id" property="id"/>
+    <result column="task_name" property="taskName"/>
+    <result column="task_desc" property="taskDesc"/>
+  </resultMap>
+  <resultMap id="userTaskRel" type="com.yhtech.sysmanage.mapper.entity.UserTaskRel">
+    <id column="id" property="id"/>
+    <association property="user" javaType="com.yhtech.sysmanage.mapper.entity.User" resultMap="user"/>
+    <association property="task" javaType="com.yhtech.sysmanage.mapper.entity.Task" resultMap="task"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_id, task_id, yn, company_id, create_at, update_at, create_user, update_user
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from user_task_rel
+    where id = #{id}
+  </select>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.yhtech.sysmanage.mapper.entity.UserTaskRel" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into user_task_rel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="yn != null">
+        yn,
+      </if>
+      <if test="companyId != null">
+        company_id,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="updateAt != null">
+        update_at,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="taskId != null">
+        #{taskId},
+      </if>
+      <if test="yn != null">
+        #{yn},
+      </if>
+      <if test="companyId != null">
+        #{companyId},
+      </if>
+      <if test="createAt != null">
+        #{createAt},
+      </if>
+      <if test="updateAt != null">
+        #{updateAt},
+      </if>
+      <if test="createUser != null">
+        #{createUser},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yhtech.sysmanage.mapper.entity.UserTaskRel">
+    <!--@mbg.generated-->
+    update user_task_rel
+    <set>
+      <if test="userId != null">
+        user_id = #{userId},
+      </if>
+      <if test="taskId != null">
+        task_id = #{taskId},
+      </if>
+      <if test="yn != null">
+        yn = #{yn},
+      </if>
+      <if test="companyId != null">
+        company_id = #{companyId},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt},
+      </if>
+      <if test="updateAt != null">
+        update_at = #{updateAt},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into user_task_rel
+    (user_id, task_id, yn, company_id, create_at, update_at, create_user, update_user
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.userId}, #{item.taskId}, #{item.yn}, #{item.companyId}, #{item.createAt},
+      #{item.updateAt}, #{item.createUser}, #{item.updateUser})
+    </foreach>
+  </insert>
+
+  <select id="selectTaskDataList" resultMap="userTaskRel">
+    SELECT
+      utr.id,
+      u.user_name,
+      t.task_name,
+      t.task_desc
+    FROM
+      user u
+        JOIN
+      user_task_rel utr ON u.id = utr.user_id
+        JOIN
+      task t ON utr.task_id = t.id
+    <where>
+      <if test="userId != null">
+        u.id = #{userId}
+      </if>
+      <if test="taskName != null and taskName != ''">
+        AND t.task_name LIKE CONCAT('%',#{taskName}, '%')
+      </if>
+      <if test="yn != null">
+        AND utr.yn = #{yn}
+      </if>
+    </where>
+  </select>
+
+  <update id="updateYnById">
+    UPDATE  user_task_rel utr
+    SET utr.yn = #{yn}, utr.update_at = NOW(), utr.update_user = #{updateUser}
+    WHERE utr.id = #{id}
+  </update>
+</mapper>
